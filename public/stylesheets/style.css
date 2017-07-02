@@ -1,0 +1,6 @@
+.thumbnail img {
+  max-height: 150px;
+}
+.badge {
+  border: none;
+}

@@ -1,0 +1,26 @@
+{{#if products}}
+  {{#each products}}
+  <div class="row">
+    <div class="col-md-3 col-sm-0">
+      <!-- Not sure why but Bootstrap offset won't work -->
+    </div>
+    <div class="col-md-6 thumbnail">
+          <h3>
+            {{this.description.title}}
+            <a class="badge" href="/remove-from-cart/{{this.description._id}}" style="float:right;">X</a>
+          </h3>
+          <h4>
+            ${{this.description.price}}.00 x
+            <button class="dropdown-toggle badge" data-toggle="dropdown">{{this.quantity}} </button>
+            = ${{this.totalPrice}}.00
+            <ul class="dropdown-menu">
+              <li><a href="/remove-one-from-cart/{{this.description._id}}">Remove One</a></li>
+            </ul>
+          </h4>
+    </div>
+  </div>
+  {{/each}}
+  <h4 class="text-center">Cart total: ${{session.cart.cartPrice}}.00</h4>
+{{else}}
+<h4>No items in cart.</h4>
+{{/if}}
