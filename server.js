@@ -1,4 +1,4 @@
-// Dependencies
+// dependencies
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -13,20 +13,20 @@ var flash = require('connect-flash');
 var validator = require('express-validator');
 var MongoStore = require('connect-mongo')(session);
 
-// Routes
-var index = require('./routes/index');
-var user = require('./routes/user');
-
+// server
 var app = express();
+var PORT = process.env.PORT || 8000;
 
-mongoose.connect('localhost:27017/shopping');
+// db
+var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/shopping';
+mongoose.connect(MONGODB_URI);
 require('./config/passport');
 
 // view engine setup
 app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
-// uncomment after placing your favicon in /public
+// uncomment after placing favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -51,9 +51,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-// redirecting
-app.use('/user', user);
-app.use('/', index);
+// routing
+app.use('/user', require('./routes/user'));
+app.use('/', require('./routes/index'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -73,4 +73,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+// start server
+app.listen(PORT, function() {
+  console.log('Server listening at http://localhost:' + PORT)
+});
